@@ -1,12 +1,60 @@
 extends layout
 
 block content
-  h1 Hackathon Starter
-  p.lead A boilerplate for Node.js web applications.
+  h1 #SameDrop Meter Bias Survey
+  p.lead Can pair-wise glucose readings reveal bias?
   hr
+  form.grid-form(action='/api/pairs', method='POST')
+    fieldset
+      legend Comparison
+      div(data-row-span="2")
+        label When?
+        input(type='datetime')
+      div.per-meter(data-row-span="3")
+        div(data-field-span="2")
+          label Meter
+          input(type='text')
+        div(data-field-span="1")
+          label Glucose
+          input(type='number')
+      div.per-meter(data-row-span="3")
+        div(data-field-span="2")
+          label Meter
+          input(type='text')
+        div(data-field-span="1")
+          label Glucose
+          input(type='number')
+      div(data-field-span="1")
+        label Add another meter
+          button.btn.btn-info(type="button", name="add")
+            i.fa.fa-plus
+      div(data-field-span="1")
+        button.btn.btn-primary(type="button", name="add")
+          i.fa.fa-submit Submit
+  //- form.form-inline(action='/api/pairs', method='POST')
+    input(type='hidden', name='_csrf', value=_csrf)
+    .form-group
+      label When?
+      input.form-control(type='datetime')
+    br
+    
+    .form-group
+      label Reading
+      input.form-control(type='number')
+    .form-group
+      label Meter
+      input.form-control(type='text')
+    br
+    .form-group
+      label Add another meter
+      button(type="button", name="add")
+        i.fa.fa-plus
+
+    pre
+      !{JSON.stringify(Object.keys(this))}
   .row
     .col-sm-6
-      h2 Heading
+      h2 Background
       p Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
       p
         a.btn.btn-default(href='#', role='button') View details »
