@@ -145,6 +145,7 @@ function query_fda (req, res, next) {
 
 function fmt_vendor_links (req, res, next) {
   var vendors = [ ];
+  if (res.fda.results)
   res.fda.results.forEach(function iter(item) {
     // item.url = req.url + '/' + encodeURIComponent(item.term);
     item.url = req.path + '/' + item.term.replace(/ /g, '+').replace(/[,.]/g, '');
@@ -162,13 +163,23 @@ exports.routes = function routes (master) {
   var app = express( );
 
   app.get('/smbg', fda_init_spec, count_vendors_spec, query_fda, fmt_vendor_links);
+  app.get('/meter-vendors', fda_init_spec, count_vendors_spec, query_fda, fmt_vendor_links);
 
   app.param('vendor', function (req, res, next, attr) {
     req.fda_vendor = attr;
     // prep vendor query
     next( );
   });
+  app.param('meter_name', function (req, res, next, attr) {
+    req.fda_meter_name = attr;
+    // prep vendor query
+    next( );
+  });
+  app.get('/meter-vendors/:vendor', fda_init_spec, count_vendors_spec, query_fda, fmt_vendor_links);
+  app.get('/vendors-by-meter-name/:meter_name', fda_init_spec, count_vendors_spec, query_fda, fmt_vendor_links);
+
   app.get('/smbg/:vendor', fda_init_spec, query_fda, fmt_fda_resp);
+  app.get('/smbg/:vendor/:meter_name', fda_init_spec, query_fda, fmt_fda_resp);
 
   app.param('attr', function (req, res, next, attr) {
     next( );

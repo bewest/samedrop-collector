@@ -12,14 +12,14 @@ block content
         input(type='datetime')
       div.per-meter(data-row-span="3")
         div(data-field-span="2")
-          label Meter
+          label(data-toggle="modal", data-target="#find-meter") Meter
           input(type='text')
         div(data-field-span="1")
           label Glucose
           input(type='number')
       div.per-meter(data-row-span="3")
         div(data-field-span="2")
-          label Meter
+          label(data-toggle="modal", data-target="#find-meter") Meter
           input(type='text')
         div(data-field-span="1")
           label Glucose
@@ -31,6 +31,31 @@ block content
       div(data-field-span="1")
         button.btn.btn-primary(type="button", name="add")
           i.fa.fa-submit Submit
+  div.modal.fade#find-meter(role="dialog")
+    .modal-dialog
+      .modal-content
+        .modal-heading
+          // button.close(type="button", data-dismiss="modal", aria-label="close")
+            span(aria-hidden="true) &times;
+          h4.modal-title
+            | Find Meter
+        .modal-body
+          p
+            | Find a meter
+          select.meter-finder#fda-meters
+        .modal-footer
+          button.btn.btn-default(data-dismiss="modal") Close
+          button.btn.btn-primary( ) Save changes
+
+  div.skeleton-option
+    div.wrapped
+      div
+        span.title
+          span.spec
+        // span.description
+        span.by
+        // ul.meta
+          li.spec
   //- form.form-inline(action='/api/pairs', method='POST')
     input(type='hidden', name='_csrf', value=_csrf)
     .form-group
