@@ -42,6 +42,7 @@ $(document).ready(function() {
     valueField: 'spec'
   , labelField: 'spec'
   , searchField: 'spec'
+  , plugins: [ 'restore_on_backspace']
   , create: false
   , render: {
     option: function (item, escape) {
