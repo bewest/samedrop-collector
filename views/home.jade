@@ -48,14 +48,14 @@ block content
     div.meter-chooser(data-field-span="2")
       label(data-toggle="modal") Meter
       // input(type='text')
-      select.favorite-finder(name="pairs[].spec")
+      select.favorite-finder(name="spec[]")
         option(value="") New meter ...
     div(data-field-span="1")
       label Serial
-        input.v.serial(type='text', name="pairs[].serial")
+        input.v.serial(type='text', name="serial[]")
     div(data-field-span="1")
       label Glucose
-        input(type='number', name="pairs[].glucose")
+        input(type='number', name="glucose[]")
 
   div.modal.fade#find-meter(role="dialog")
     .modal-dialog

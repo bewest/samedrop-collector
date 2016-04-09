@@ -956,20 +956,22 @@ exports.insertPairs = function (req, res, next) {
   , comparisons: [ ]
   };
   var pairs = [ ];
-  req.body.pairs.forEach(function (test) {
-    if (test && test.length == 3) {
-      var pair = {
-        spec: test[0]
-      , serial: test[1]
-      , glucose: parseInt(test[2])
-      };
+  console.log('body', req.body);
+  req.body.glucose.forEach(function (glucose, i) {
+
+    console.log('II', i);
+    var pair = {
+      spec: req.body.spec[i]
+    , serial: req.body.serial[i]
+    , glucose: parseInt(glucose)
+    };
+    if (pair.glucose && pair.spec.length) {
       pairs.push(pair);
     }
   });
 
   res.locals.pairs = record;
   res.locals.error = false;
-  console.log('body', req.body);
   if (pairs.length >= 2) {
     record.comparisons = pairs;
     var testResult = new req.app.locals.models.Pairs(record);
@@ -977,8 +979,11 @@ exports.insertPairs = function (req, res, next) {
       res.locals.error = err || false;
       next( );
     });
+  } else {
+    console.log("FAIL", pairs.length, pairs)
+    res.locals.error = true;
+    next( );
   }
-  res.locals.error = true;
 
 }
 exports.fmt_new_pairs = function (req, res, next) {

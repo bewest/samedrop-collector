@@ -24,12 +24,12 @@ function needs_new_meter (ev) {
   var target = $(ev.target);
   console.log("HMM?", ev.type, target);
   $('#find-meter').modal('show');
-  $("#pairsinsertion").trigger('reload');
 }
 function finished_saving_favorite (ev, results, status) {
   switch (status) {
     case 'success':
       $('#find-meter').modal('hide');
+      $("#pairsinsertion").trigger('reload');
       break;
     default:
       console.log("should not happen");
@@ -187,9 +187,9 @@ $(document).ready(function() {
   });
 
   var root_pairs = d3.select('#pairsinsertion');
-  var empty = { required: true };
+  var empty = { required: true, spec: 'required', empty: true };
   var none = [ empty, empty ];
-  var required = root_pairs.selectAll('.per-meter.required').data(none);
+  var required = root_pairs.selectAll('DIV.per-meter.required').data(none);
   $('#pairsinsertion').on('loaded', function (ev, favorites) {
     var pairs = $('.per-meter'); // .remove( );
     var clone = $('.per-meter.skeleton#test_template').clone(true).removeClass('skeleton').removeClass('hidden').attr('id', null);
@@ -211,11 +211,18 @@ $(document).ready(function() {
       extra = [ empty, empty ];
     }
     // var head = favorites.slice(0, 2).concat([empty, empty]).slice(0, 2);
-    var head = favorites.concat(extra);
-    // var required = root_pairs.selectAll('.per-meter.required').data(head);
+    var head = favorites.concat(extra)
+    head.forEach(function (item, i) {
+      item._id = i.toString( ) + "_" + item.spec;
+    });
+    var required = root_pairs.selectAll('DIV.per-meter').data(head, function (d) { return d._id; });
     // required.data(head);
-    required.data(head).enter( ).append(function (datum, idx) {
+    // required = required.data(head)
+    // var foo = required.selectAll('.per-meter.required').data(head);
+    // required.enter( ).append('DIV').html(function (datum, idx) {
+    required.enter( ).append(function (datum, idx) {
       // var temp = $("<div />").append(clone.clone(true ));
+      console.log('APPEND', this, datum, idx);
       var temp = clone.clone(true);
       if (datum.spec) {
         var opts = temp.find('SELECT OPTION').slice(idx+1)[0];
@@ -226,16 +233,34 @@ $(document).ready(function() {
         temp.addClass('empty');
       }
       // console.log("APPEND", opts, this, arguments);
+      // return d3.select(temp).datum(datum)[0];
+      // return $("<div />").append(temp).html( );
       return temp.get(0);
-    }).call(function (rows) {
-      rows.each(function (data, idx) {
+    }).each(function (data, idx) {
 
-        console.log('each', this, 'data', data, idx);
-      });
+      d3.select(this).classed('empty', data.empty);
+      // if (data.required && data.empty) { }
+      console.log('each', this, 'data', data, idx);
+      // d3.select(this).classed('per-meter', true);
     });
-    var tail = favorites.slice(2);
+    /*
+    required.transition( ).duration(800).each(function (data, idx) {
+
+      console.log('transition', this, 'data', data, idx);
+    });
+    */
+    required
+      // .data(head, function (d) { return d.spec; })
+      .exit( )
+      .each(function (data, idx) {
+        console.log('exit?', this);
+        d3.select(this).classed('removed', true);
+      });
+    /*
+    */
+    // var tail = favorites.slice(2);
     // favorites.forEach(function (fave, n) { });
-    console.log('favorites', favorites);
+    console.log('favorites', head);
 
   });
 
