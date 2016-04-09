@@ -36,7 +36,7 @@ block content
       div#pairsinsertion(data-ajax-target="/account/favorites")
         div.hidden.skeleton.per-meter(data-row-span="4")
           div.meter-chooser(data-field-span="2")
-            label(data-toggle="modal", data-target="#find-meter") Meter
+            label(data-toggle="modal") Meter
             // input(type='text')
             select.favorite-finder(name="spec[]")
               option(value="new") New meter ...
@@ -52,7 +52,7 @@ block content
             i.fa.fa-plus
       br
       div(data-field-span="1")
-        button.btn.btn-primary(type="button", name="add")
+        button.btn.btn-primary(type="submit", name="add")
           i.fa.fa-submit Submit
   div.modal.fade#find-meter(role="dialog")
     .modal-dialog

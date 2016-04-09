@@ -206,7 +206,7 @@ $(document).ready(function() {
     // d3.select(
     var root = d3.select(pivot.get(0));
     var extra = [ empty ];
-    if (favorites.length < 3) {
+    if (favorites.length < 2) {
       console.log('2 extra', favorites.length);
       extra = [ empty, empty ];
     }

@@ -27,6 +27,11 @@ var upload = multer({ dest: path.join(__dirname, 'uploads') });
 dotenv.load({ path: 'samedrop-collector.env' });
 
 /**
+ * Models
+ */
+var Pairs = require('./models/Pairs');
+
+/**
  * Controllers (route handlers).
  */
 var homeController = require('./controllers/home');
@@ -58,6 +63,7 @@ mongoose.connection.on('error', function() {
  * Express configuration.
  */
 app.set('port', process.env.PORT || 3000);
+app.set('models', { Pairs: Pairs });
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.use(compress());
