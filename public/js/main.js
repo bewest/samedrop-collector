@@ -239,6 +239,7 @@ $(document).ready(function() {
     }).each(function (data, idx) {
 
       d3.select(this).classed('empty', data.empty);
+      d3.select(this).select('.v.glucose.in').attr('tabindex', idx+2);
       // if (data.required && data.empty) { }
       console.log('each', this, 'data', data, idx);
       // d3.select(this).classed('per-meter', true);
