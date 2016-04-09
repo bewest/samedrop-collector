@@ -192,7 +192,7 @@ $(document).ready(function() {
   var required = root_pairs.selectAll('.per-meter.required').data(none);
   $('#pairsinsertion').on('loaded', function (ev, favorites) {
     var pairs = $('.per-meter'); // .remove( );
-    var clone = $('.per-meter.skeleton').clone(true).removeClass('skeleton').removeClass('hidden');
+    var clone = $('.per-meter.skeleton#test_template').clone(true).removeClass('skeleton').removeClass('hidden').attr('id', null);
     //  pairs.get(0)).clone(true);
     clone.find('select').find('OPTION.favorite').remove( );
     favorites.forEach(function (fave) {

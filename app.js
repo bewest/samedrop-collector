@@ -63,7 +63,7 @@ mongoose.connection.on('error', function() {
  * Express configuration.
  */
 app.set('port', process.env.PORT || 3000);
-app.set('models', { Pairs: Pairs });
+app.locals.models = { Pairs: Pairs };
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.use(compress());
@@ -178,6 +178,9 @@ app.get('/api/upload', apiController.getFileUpload);
 app.post('/api/upload', upload.single('myFile'), apiController.postFileUpload);
 app.get('/api/pinterest', passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.getPinterest);
 app.post('/api/pinterest', passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.postPinterest);
+
+app.post('/api/pairs', passportConfig.isAuthenticated, apiController.insertPairs, apiController.fmt_new_pairs);
+app.get('/api/pairs', apiController.queryPairs, apiController.fmt_pair_list);
 
 /**
  * OAuth authentication routes. (Sign in)
