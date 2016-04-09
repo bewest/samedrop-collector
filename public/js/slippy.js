@@ -41,8 +41,8 @@ function slippy (dom, opt) {
     // console.log(Date.create(end));
     var delta = Date.create(end).relative( );
     // .replace(' ago', '');
-    var w = cursor.attr('width');
-    var pos = parseFloat(cursor.attr('x')) + parseFloat(w)/2;
+    var mid = cursor.select('.cursor-mid-point');
+    var pos = parseFloat(mid.attr('x1'));
     var current = scales.x.invert(pos);
     opt.controls.val(current.format(Date.ISO8601_DATETIME));
     // opt.controls.find('.begin-input').val(delta);
@@ -111,15 +111,29 @@ function slippy (dom, opt) {
       .call(frame.xAxis)
       ;
 
+    var cursor_spec = {
+      width: width * .10
+    , height: dom_height
+    , x: width * 2/3
+    , y: 0
+    };
     cursor = chart.append("g")
       .attr("transform", "translate(" + 0 + ", " + (0) + ")")
       .attr("class", "current-cursor")
-      .append("rect")
+      ;
+    cursor.append("rect")
         .attr("class", "cursor")
-        .attr("x", width * 2/3)
-        .attr("y",  0)
-        .attr("width", width * .10)
-        .attr("height", dom_height * .75)
+        .attr("x", cursor_spec.x)
+        .attr("y",  cursor_spec.y)
+        .attr("width", cursor_spec.width)
+        .attr("height", cursor_spec.height)
+
+    cursor.append("line")
+        .attr("class", "cursor-mid-point")
+        .attr("x1", cursor_spec.x + (cursor_spec.width * .5))
+        .attr("y1", 0)
+        .attr("x2", cursor_spec.x + (cursor_spec.width * .5))
+        .attr("y2", dom_height)
       ;
     zoomer = d3.behavior.zoom( )
       .x(scales.x)
