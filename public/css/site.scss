@@ -1,0 +1,23 @@
+svg {
+  // border: 1px solid red;
+  display: block;
+}
+
+.when-control {
+  height: 80px;
+  display: block;
+  clear: none;
+  // border: 1px solid blue;
+}
+
+.x.axis line {
+  stroke: black;
+}
+
+
+.current-cursor .cursor {
+  stroke: green;
+  fill: green;
+  opacity: 0.1;
+  // border: 50% 0% solid blue;
+}

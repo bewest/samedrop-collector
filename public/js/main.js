@@ -1,6 +1,47 @@
 
+function do_ajax_form (ev) {
+  var target = $(ev.target);
+  ev.preventDefault( );
+  // ev.stopPropagation( );
+  var params = target.serialize( );
+  var opts = {
+    data: params
+  , url: target.attr('action')
+  , method: target.attr('method')
+  , context: target
+  };
+
+  $.ajax(opts).done(function ( ) {
+    console.log("WOW", arguments);
+    target.trigger('form-submit-done', [].slice.call(arguments));
+  });
+  console.log(params);
+
+  return false;
+}
+
+function needs_new_meter (ev) {
+  var target = $(ev.target);
+  console.log("HMM?", ev.type, target);
+  $('#find-meter').modal('show');
+  $("#pairsinsertion").trigger('reload');
+}
+function finished_saving_favorite (ev, results, status) {
+  switch (status) {
+    case 'success':
+      $('#find-meter').modal('hide');
+      break;
+    default:
+      console.log("should not happen");
+      break;
+  }
+
+}
+
 function do_favorite_choice (ev) {
   var target = $(ev.target);
+  if (target.is('.empty')) {
+  }
   console.log('ev', ev.type, target, ev);
 }
 
@@ -118,6 +159,7 @@ $(document).ready(function() {
   }
   };
   $(".per-meter").on('focus', '.meter-chooser', do_favorite_choice);
+  $("#pairsinsertion").on('focus', '.empty.per-meter :input', needs_new_meter);
   $("#fda-meters").selectize(fda_opts).trigger('change');
   var begin = Date.create('30 minutes ago');
   var end = Date.create('5 minutes from now');
@@ -126,5 +168,83 @@ $(document).ready(function() {
     , begin: begin
     , end: end
   } );
+
+  $('[data-ajax-target]').each(function iter () {
+    var el = $(this);
+    function notify ( ) {
+      $(this).trigger('loaded', [].slice.call(arguments));
+    }
+    function reload ( ) {
+      var url = el.data('ajax-target');
+      $.ajax({
+        url: url
+      , context: el
+      }).done(notify);
+    }
+    el.on('reload', reload);
+    reload( );
+
+  });
+
+  var root_pairs = d3.select('#pairsinsertion');
+  var empty = { required: true };
+  var none = [ empty, empty ];
+  var required = root_pairs.selectAll('.per-meter.required').data(none);
+  $('#pairsinsertion').on('loaded', function (ev, favorites) {
+    var pairs = $('.per-meter'); // .remove( );
+    var clone = $('.per-meter.skeleton').clone(true).removeClass('skeleton').removeClass('hidden');
+    //  pairs.get(0)).clone(true);
+    clone.find('select').find('OPTION.favorite').remove( );
+    favorites.forEach(function (fave) {
+      var opt = $("<OPTION/>").addClass('favorite').attr('value', fave.spec).text(fave.spec);
+      console.log(opt);
+      clone.find('select').append(opt);
+      
+    });
+    
+    var pivot = $(ev.target);
+    // d3.select(
+    var root = d3.select(pivot.get(0));
+    var extra = [ empty ];
+    if (favorites.length < 3) {
+      console.log('2 extra', favorites.length);
+      extra = [ empty, empty ];
+    }
+    // var head = favorites.slice(0, 2).concat([empty, empty]).slice(0, 2);
+    var head = favorites.concat(extra);
+    // var required = root_pairs.selectAll('.per-meter.required').data(head);
+    // required.data(head);
+    required.data(head).enter( ).append(function (datum, idx) {
+      // var temp = $("<div />").append(clone.clone(true ));
+      var temp = clone.clone(true);
+      if (datum.spec) {
+        var opts = temp.find('SELECT OPTION').slice(idx+1)[0];
+        if (opts) {
+          temp.find('SELECT').val($(opts).val( ));
+        }
+      } else {
+        temp.addClass('empty');
+      }
+      // console.log("APPEND", opts, this, arguments);
+      return temp.get(0);
+    }).call(function (rows) {
+      rows.each(function (data, idx) {
+
+        console.log('each', this, 'data', data, idx);
+      });
+    });
+    var tail = favorites.slice(2);
+    // favorites.forEach(function (fave, n) { });
+    console.log('favorites', favorites);
+
+  });
+
+  $('#pairsinsertion').on('change', '.per-meter select', function (ev, favorites) {
+    var target = $(ev.target);
+    console.log("changed", target, target.val( ));
+  });
+
+  $('FORM.ajax-form').on('submit', do_ajax_form);
+  $('#find-meter').on('form-submit-done', 'FORM', finished_saving_favorite);
 
 });

@@ -125,6 +125,36 @@ exports.getAccount = function(req, res) {
   });
 };
 
+exports.postFavorite = function (req, res) {
+  // res.user.favorites.push
+  var user = req.user;
+  var spec = req.body.meter_spec;
+  var vendor = spec.split(':::').slice(0, 1).pop( ).trim( );
+  var device = spec.split(':::').slice(1).join('').trim( );
+  var nick = req.body.nickname.trim( );
+  if (!nick.length) {
+    nick = vendor.split(' ')[0] + ' '+ device.split(' ')[0];
+  }
+  var meter = {
+    spec: spec
+  , nick: nick
+  , device: device
+  , vendor: vendor
+  , serial: req.body.serial
+  };
+  user.favorites.push(meter);
+  user.save(function(err) {
+    req.flash('info', { msg: 'New favorite meter, ' + nick });
+    // done(err, user);
+    res.json(req.body);
+  });
+  // res.json(req.user.toJSON( ).favorites);
+}
+
+exports.getFavorites = function (req, res) {
+  res.json(req.user.toJSON( ).favorites);
+}
+
 /**
  * POST /account/profile
  * Update profile information.

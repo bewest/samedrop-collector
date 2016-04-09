@@ -4,50 +4,80 @@ block content
   h1 #SameDrop Meter Bias Survey
   p.lead Can pair-wise glucose readings reveal bias?
   hr
-  form.grid-form(action='/api/pairs', method='POST')
+  form.grid-form#pairs(action='/api/pairs', method='POST')
     fieldset
       legend Comparison
       div(data-row-span="2")
         label When?
         .when-control
-        input.when-input(type='datetime', placeholder='now')
-      div.per-meter(data-row-span="3")
+        input.when-input(type='datetime', placeholder='now', name="when")
+      //- div.per-meter(data-row-span="4")
         div.meter-chooser(data-field-span="2")
           label(data-toggle="modal", data-target="#find-meter") Meter
-          input(type='text')
+          // input(type='text')
+          select.favorite-finder( )
+        div(data-field-span="1")
+          label Serial
+            input.v.serial(type='text', name="serial[]")
         div(data-field-span="1")
           label Glucose
-          input(type='number')
-      div.per-meter(data-row-span="3")
+            input(type='number', name="glucose[]")
+      //- div.per-meter(data-row-span="4")
         div.meter-chooser(data-field-span="2")
           label(data-toggle="modal", data-target="#find-meter") Meter
-          input(type='text')
+          // input(type='text')
+          select.favorite-finder( )
+        div(data-field-span="1")
+          label Serial
+            input.v.serial(type='text', name="serial[]")
         div(data-field-span="1")
           label Glucose
-          input(type='number')
-      div#pairsinsertion(data-ajax-target="/users/favorites")
-      div(data-field-span="1")
+            input(type='number', name="glucose[]")
+      div#pairsinsertion(data-ajax-target="/account/favorites")
+        div.hidden.skeleton.per-meter(data-row-span="4")
+          div.meter-chooser(data-field-span="2")
+            label(data-toggle="modal", data-target="#find-meter") Meter
+            // input(type='text')
+            select.favorite-finder(name="spec[]")
+              option(value="new") New meter ...
+          div(data-field-span="1")
+            label Serial
+              input.v.serial(type='text', name="serial[]")
+          div(data-field-span="1")
+            label Glucose
+              input(type='number', name="glucose[]")
+      //- div(data-field-span="1")
         label Add another meter
           button.btn.btn-info(type="button", name="add")
             i.fa.fa-plus
+      br
       div(data-field-span="1")
         button.btn.btn-primary(type="button", name="add")
           i.fa.fa-submit Submit
   div.modal.fade#find-meter(role="dialog")
     .modal-dialog
-      .modal-content
-        .modal-header
-          button.close(type="button", data-dismiss="modal", aria-label="close")
-            span(aria-hidden="true") &times;
-          h4.modal-title
-            | Find Meter
-        .modal-body
-          p
-            | Find a meter
-          select.meter-finder#fda-meters
-        .modal-footer
-          button.btn.btn-default(data-dismiss="modal") Close
-          button.btn.btn-primary( ) Save changes
+      form.ajax-form(action="/account/favorites", method="POST")
+        input(type='hidden', name='_csrf', value=_csrf)
+        .modal-content
+          .modal-header
+            button.close(type="button", data-dismiss="modal", aria-label="close")
+              span(aria-hidden="true") &times;
+            h4.modal-title
+              | Find Meter
+          .modal-body
+            p
+              | Find a meter
+            //- form.grid-form
+            select.meter-finder#fda-meters(name="meter_spec")
+            .form-group
+              label Nickname?
+                input.form-control(type='text', name="nickname")
+            .form-group
+              label Serial?
+                input.form-control(type='text', name='serial')
+          .modal-footer
+            button.btn.btn-primary(type="submit") Save favorite meter
+            button.btn.btn-default(data-dismiss="modal") Close
 
   div.skeleton-option
     div.wrapped
