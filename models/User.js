@@ -16,6 +16,7 @@ var userSchema = new mongoose.Schema({
   linkedin: String,
   steam: String,
   tokens: Array,
+  favorites: Array,
 
   profile: {
     name: { type: String, default: '' },

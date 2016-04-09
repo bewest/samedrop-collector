@@ -9,21 +9,23 @@ block content
       legend Comparison
       div(data-row-span="2")
         label When?
-        input(type='datetime')
+        .when-control
+        input.when-input(type='datetime', placeholder='now')
       div.per-meter(data-row-span="3")
-        div(data-field-span="2")
+        div.meter-chooser(data-field-span="2")
           label(data-toggle="modal", data-target="#find-meter") Meter
           input(type='text')
         div(data-field-span="1")
           label Glucose
           input(type='number')
       div.per-meter(data-row-span="3")
-        div(data-field-span="2")
+        div.meter-chooser(data-field-span="2")
           label(data-toggle="modal", data-target="#find-meter") Meter
           input(type='text')
         div(data-field-span="1")
           label Glucose
           input(type='number')
+      div#pairsinsertion(data-ajax-target="/users/favorites")
       div(data-field-span="1")
         label Add another meter
           button.btn.btn-info(type="button", name="add")
@@ -34,9 +36,9 @@ block content
   div.modal.fade#find-meter(role="dialog")
     .modal-dialog
       .modal-content
-        .modal-heading
-          // button.close(type="button", data-dismiss="modal", aria-label="close")
-            span(aria-hidden="true) &times;
+        .modal-header
+          button.close(type="button", data-dismiss="modal", aria-label="close")
+            span(aria-hidden="true") &times;
           h4.modal-title
             | Find Meter
         .modal-body

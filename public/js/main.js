@@ -1,10 +1,16 @@
 
+function do_favorite_choice (ev) {
+  var target = $(ev.target);
+  console.log('ev', ev.type, target, ev);
+}
+
 function get_vendors (res, query) {
   var results = [ ];
   if (res) {
     res.forEach(function iter (item) {
       item.spec = item.term + ' ::: ';
       item.name = '';
+      item.label = item.term;
       item.description = item.count;
       item.by = item.count;
       results.push(item);
@@ -20,9 +26,13 @@ function get_meters (res, query) {
   res.results.forEach(function iter (item) {
     item.proprietary_name.forEach(function (name) {
       var sub = Object.create(item);
-      // sub.spec = item.registration.name + " ::: " + name;
-      sub.spec = query.vendor + " ::: " + name;
       sub.name = name;
+      // console.log(item.registration);
+      // sub.spec = item.registration.name + " ::: " + name;
+      // sub.spec = item.registration.registration_number + " ::: " + name;
+      sub.spec = query.vendor + " ::: " + name;
+      // sub.label = item.registration.name + " ::: " + name;
+      sub.label = query.vendor + " ::: " + name;
       results.push(sub);
     });
   });
@@ -40,7 +50,7 @@ $(document).ready(function() {
   });
   var fda_opts = {
     valueField: 'spec'
-  , labelField: 'spec'
+  , labelField: 'label'
   , searchField: 'spec'
   , plugins: [ 'restore_on_backspace']
   , create: false
@@ -77,34 +87,19 @@ $(document).ready(function() {
     }
     if (parts.length == 2) {
       url = '/fda/smbg';
-      search.vendor = parts[0].trim( );
+      search.vendor = parts[0].trim( )
+        .replace(/[.,]/g, '')
+        .replace(/ /g, '+');
       search.name = parts[1].trim( );
       if (search.vendor.length) {
-        url = url + '/' + encodeURIComponent(search.vendor);
+        url = url + '/' + search.vendor;
       }
       if (search.name.length) {
         url = url + '/' + encodeURIComponent(search.name);
       }
       get_payload = get_meters;
     }
-    /*
-    if (!query.length) get_payload = get_vendors;
-    var vendor = query.split('/')[0].trim( );
-    var rest = query.split('/').slice(1).join('/');
 
-    var url = '/fda/smbg';
-    if  (vendor && query.split('/').length > 1) {
-      url = url + '/' + encodeURIComponent(vendor)
-    } else {
-      console.log("SEARCHING VENDORS");
-      get_payload = get_vendors;
-    }
-    if (rest) {
-      console.log("SEARCHING REST");
-      // url = url + '/' + encodeURIComponent(rest)
-      // get_payload = get_meters;
-    }
-    */
     url = url + '?limit=40';
     console.log("SEARCH", url);
     $.ajax({
@@ -122,6 +117,14 @@ $(document).ready(function() {
     });
   }
   };
+  $(".per-meter").on('focus', '.meter-chooser', do_favorite_choice);
   $("#fda-meters").selectize(fda_opts).trigger('change');
+  var begin = Date.create('30 minutes ago');
+  var end = Date.create('5 minutes from now');
+  var control = slippy($('.when-control'),
+    { controls: $('.when-input')
+    , begin: begin
+    , end: end
+  } );
 
 });

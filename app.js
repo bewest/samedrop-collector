@@ -107,6 +107,9 @@ var d3_dir = require.resolve('d3/d3.min.js').match(/.*\/node_modules\/[^/]+\//)[
 app.use('/files/d3', express.static(d3_dir, { maxAge: 31557600000 }));
 app.use('/files/gridforms', express.static(path.join(__dirname, 'node_modules/gridforms/gridforms'), { maxAge: 31557600000 }));
 app.use('/files/selectize', express.static(path.join(__dirname, 'node_modules/selectize/dist'), { maxAge: 31557600000 }));
+app.use('/files/sugar',
+  express.static(path.join(__dirname, 'node_modules/sugar/release'),
+  { maxAge: 31557600000 }));
 
 /**
  * Primary app routes.
