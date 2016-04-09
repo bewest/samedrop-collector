@@ -187,7 +187,7 @@ $(document).ready(function() {
   });
 
   var root_pairs = d3.select('#pairsinsertion');
-  var empty = { required: true, spec: 'required', empty: true };
+  var empty = { required: true, spec: '', empty: true };
   var none = [ empty, empty ];
   var required = root_pairs.selectAll('DIV.per-meter.required').data(none);
   $('#pairsinsertion').on('loaded', function (ev, favorites) {
@@ -225,10 +225,13 @@ $(document).ready(function() {
       console.log('APPEND', this, datum, idx);
       var temp = clone.clone(true);
       if (datum.spec) {
+        temp.find('INPUT.v.in.spec').val(datum.spec);
+        /*
         var opts = temp.find('SELECT OPTION').slice(idx+1)[0];
         if (opts) {
           temp.find('SELECT').val($(opts).val( ));
         }
+        */
       } else {
         temp.addClass('empty');
       }

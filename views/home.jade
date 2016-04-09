@@ -46,9 +46,9 @@ block content
 
   div.hidden.skeleton.per-meter#test_template(data-row-span="4")
     div.meter-chooser(data-field-span="2")
-      label(data-toggle="modal") Meter
-      // input(type='text')
-      select.favorite-finder(name="spec[]")
+      label(data-nontoggle="modal") Meter
+        input.v.in.spec(type='text', name="spec[]", readonly="readonly", placeholder="Add a new meter ...")
+      // select.favorite-finder(name="spec[]")
         option(value="") New meter ...
     div(data-field-span="1")
       label Serial
