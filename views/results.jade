@@ -1,0 +1,28 @@
+
+extends layout
+
+block content
+  h1 #SameDrop result
+
+  if results
+    div
+      - result = results[0]
+      a.link.canonical(rel="canonical", href="/samedrop/results/#{results[0]._id}") Result #{result._id}
+      br
+      a.twitter-share-button(href="https://twitter.com/intent/tweet?text=Hello%20world&hashtags=samedrop&size=large")
+      //- pre
+        | #{JSON.stringify(results)}
+
+    //- .well
+      h4 Compose new Tweet
+      form(role='form', method='POST', action='/api/twitter')
+        input(type='hidden', name='_csrf', value=_csrf)
+        .form-group
+          input.form-control(type='text', name='tweet', autofocus)
+          p.help-block This new Tweet will be posted on your Twitter profile.
+        button.btn.btn-primary(type='submit')
+          i.fa.fa-twitter
+          |  Tweet
+
+  include partials/twitter-timeline.html
+

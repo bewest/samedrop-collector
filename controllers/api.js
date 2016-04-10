@@ -310,7 +310,7 @@ exports.getTwitter = function(req, res, next) {
     access_token: token.accessToken,
     access_token_secret: token.tokenSecret
   });
-  T.get('search/tweets', { q: 'nodejs since:2013-01-01', geocode: '40.71448,-74.00598,5mi', count: 10 }, function(err, reply) {
+  T.get('search/tweets', { q: '#samedrop', result_type: 'recent', count: 10 }, function(err, reply) {
     if (err) {
       return next(err);
     }
@@ -927,6 +927,10 @@ exports.postPinterest = function(req, res, next) {
   });
 };
 
+exports.prep_anon_pair = function (req, res, next) {
+  req.query.find = { _id: req.params.pair };
+  next( );
+}
 exports.queryPairs = function (req, res, next) {
   var find = req.query.find || { };
   function found (err, results) {
@@ -956,10 +960,9 @@ exports.insertPairs = function (req, res, next) {
   , comparisons: [ ]
   };
   var pairs = [ ];
-  console.log('body', req.body);
+  // console.log('body', req.body);
   req.body.glucose.forEach(function (glucose, i) {
 
-    console.log('II', i);
     var pair = {
       spec: req.body.spec[i]
     , serial: req.body.serial[i]
@@ -977,6 +980,7 @@ exports.insertPairs = function (req, res, next) {
     var testResult = new req.app.locals.models.Pairs(record);
     testResult.save(function (err) {
       res.locals.error = err || false;
+      res.locals.inserted = testResult;
       next( );
     });
   } else {
@@ -998,7 +1002,7 @@ exports.fmt_new_pairs = function (req, res, next) {
     "html": function ( ) {
       if (!res.locals.error)
       req.flash('success', { msg: 'Comparison logged' });
-      res.redirect('/');
+      res.redirect('/samedrop/results/' + res.locals.inserted._id);
     }
 
   });

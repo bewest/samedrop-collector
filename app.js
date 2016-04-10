@@ -185,6 +185,9 @@ app.post('/api/pinterest', passportConfig.isAuthenticated, passportConfig.isAuth
 app.post('/api/pairs', passportConfig.isAuthenticated, apiController.insertPairs, apiController.fmt_new_pairs);
 app.get('/api/pairs', apiController.queryPairs, apiController.fmt_pair_list);
 
+app.get('/samedrop/results', passportConfig.isAuthenticated, homeController.getResults);
+app.get('/samedrop/results/:pair', passportConfig.isAuthenticated, apiController.prep_anon_pair, apiController.queryPairs, homeController.renderResultPair, apiController.fmt_pair_list);
+
 /**
  * OAuth authentication routes. (Sign in)
  */
