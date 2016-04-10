@@ -7,9 +7,26 @@ block content
   if results
     div
       - result = results[0]
-      a.link.canonical(rel="canonical", href="/samedrop/results/#{results[0]._id}") Result #{result._id}
-      br
+      //- a.link.canonical(rel="canonical", href="/samedrop/results/#{results[0]._id}") #{result._id}
+      //- br
       a.twitter-share-button(href="https://twitter.com/intent/tweet?text=Hello%20world&hashtags=samedrop&size=large")
+      .grid-form
+        fieldset
+          legend Comparison: #{' '}
+            a.link.canonical(rel="canonical", href="/samedrop/results/#{result._id}") #{result._id}
+        for pair in result.comparisons
+          div.per-meter(data-row-span="4")
+            div(data-field-span="2")
+              label(data-nontoggle="modal") Meter
+                input.v.spec(type='text', readonly="readonly", placeholder="Add a new meter ...", value="#{pair.spec}")
+            div(data-field-span="1")
+              label Serial
+                input.v.serial(type='text', readonly="readonly", value="#{pair.serial}")
+            div(data-field-span="1")
+              label Glucose [mg/dL]
+                input.v.glucose(type='number', readonly="readonly", value="#{pair.glucose}")
+
+
       //- pre
         | #{JSON.stringify(results)}
 

@@ -226,6 +226,7 @@ $(document).ready(function() {
       var temp = clone.clone(true);
       if (datum.spec) {
         temp.find('INPUT.v.in.spec').val(datum.spec);
+        temp.find('INPUT.v.in.serial').val(datum.serial);
         /*
         var opts = temp.find('SELECT OPTION').slice(idx+1)[0];
         if (opts) {
