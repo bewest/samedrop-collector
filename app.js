@@ -64,6 +64,7 @@ mongoose.connection.on('error', function() {
 /**
  * Express configuration.
  */
+app.enable('trust proxy');
 app.set('port', process.env.PORT || 3000);
 app.locals.models = { Pairs: Pairs };
 app.set('views', path.join(__dirname, 'views'));
