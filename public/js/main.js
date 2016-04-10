@@ -279,5 +279,8 @@ $(document).ready(function() {
 
   $('FORM.ajax-form').on('submit', do_ajax_form);
   $('#find-meter').on('form-submit-done', 'FORM', finished_saving_favorite);
+  $('#find-meter').on('shown.bs.modal', function ( ) {
+    $(this).find('.meter-finder')[0].selectize.focus( );
+  });
 
 });
