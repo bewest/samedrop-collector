@@ -24,9 +24,9 @@ var upload = multer({ dest: path.join(__dirname, 'uploads') });
  *
  * Default path: .env (You can remove the path argument entirely, after renaming `.env.example` to `.env`)
  */
-var ENVFILE = process.env.SAMEDROP_CONFIG_ENV || './samedrop-collector.env';
+var ENVFILE = process.env.SAMEDROPCONFIG || './samedrop-collector.env';
 dotenv.load({ path: 'samedrop-collector.env', silent: true });
-console.log("ENVIRON", process.env);
+console.log("ENVIRON", ENVFILE, process.env);
 
 /**
  * Models
