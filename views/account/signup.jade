@@ -4,6 +4,8 @@ block content
   .page-header
     h3 Sign up
   form.form-horizontal(id='signup-form', method='POST')
+    include oauth_links
+    p Or create an local account.
     input(type='hidden', name='_csrf', value=_csrf)
     .form-group
       label.col-sm-3.control-label(for='email') Email
