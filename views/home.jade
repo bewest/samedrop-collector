@@ -11,7 +11,8 @@ block content
       div(data-row-span="2")
         label When?
         .when-control
-        input.when-input(type='datetime', placeholder='now', name="when")
+        input.when-explained(type='datetime', readonly="readonly")
+        input.hidden.when-input(type='datetime', placeholder='now', name="when")
       //- div.per-meter(data-row-span="4")
         div.meter-chooser(data-field-span="2")
           label(data-toggle="modal", data-target="#find-meter") Meter

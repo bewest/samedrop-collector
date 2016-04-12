@@ -289,9 +289,10 @@ $(document).ready(function() {
     $(this).find('.meter-finder')[0].selectize.focus( );
   });
 
-  $('.when-input').on('change', function (ev) {
+  $('.when-input').on('update-time', function (ev) {
     var target = $(ev.target);
-    console.log('zzz', target.val( ));
+    $('.when-explained').val(Date.create(target.val( )).full( ));
   });
+  $('.when-input').trigger('update-time');
 });
 

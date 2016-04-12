@@ -44,7 +44,7 @@ function slippy (dom, opt) {
     var mid = cursor.select('.cursor-mid-point');
     var pos = parseFloat(mid.attr('x1'));
     var current = scales.x.invert(pos);
-    opt.controls.val(current.format(Date.ISO8601_DATETIME));
+    opt.controls.val(current.format(Date.ISO8601_DATETIME)).trigger('update-time');
     // opt.controls.find('.begin-input').val(delta);
     // opt.controls.find('.end-input').val(end.format(Date.ISO8601_DATETIME));
     // opt.controls.data('range', {begin: begin, end: end});
