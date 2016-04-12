@@ -975,7 +975,7 @@ exports.insertPairs = function (req, res, next) {
 
   res.locals.pairs = record;
   res.locals.error = false;
-  if (pairs.length >= 2) {
+  if (pairs.length >= 1) {
     record.comparisons = pairs;
     var testResult = new req.app.locals.models.Pairs(record);
     testResult.save(function (err) {
@@ -1000,9 +1000,12 @@ exports.fmt_new_pairs = function (req, res, next) {
       res.json(res.locals.pairs);
     },
     "html": function ( ) {
-      if (!res.locals.error)
-      req.flash('success', { msg: 'Comparison logged' });
-      res.redirect('/samedrop/results/' + res.locals.inserted._id);
+      if (!res.locals.error) {
+        req.flash('success', { msg: 'Comparison logged' });
+        res.redirect('/samedrop/results/' + res.locals.inserted._id);
+      } else {
+        req.flash('error', { msg: 'Need at least two comparisons' });
+      }
     }
 
   });

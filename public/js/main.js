@@ -288,5 +288,10 @@ $(document).ready(function() {
   $('#find-meter').on('shown.bs.modal', function ( ) {
     $(this).find('.meter-finder')[0].selectize.focus( );
   });
+
+  $('.when-input').on('change', function (ev) {
+    var target = $(ev.target);
+    console.log('zzz', target.val( ));
+  });
 });
 
