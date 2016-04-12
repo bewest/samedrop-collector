@@ -8,13 +8,13 @@ function delete_eq (ev) {
   $.ajax({
     url: url
   , method: 'DELETE'
-  , data: {
-    _csrf: csrf
-  }
+  , data: { _csrf: csrf }
   , context: target
-  , done: function ( ) {
-    $('.inventory').trigger('reload');
-  }
+  }).done(function (ev, status) {
+    console.log('DEETED??', this, arguments);
+    if (status == 'success') {
+      $('.inventory').trigger('reload');
+    }
   });
 }
 
@@ -62,7 +62,7 @@ function populate_inventory (ev, eq, status) {
         }
     });
 
-  rows.exit( ).transition( ).duration(3000).remove( );
+  rows.exit( ).transition( ).duration(500).style('opacity', 0).remove( );
 
 }
 
