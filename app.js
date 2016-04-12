@@ -40,6 +40,7 @@ var homeController = require('./controllers/home');
 var userController = require('./controllers/user');
 var apiController = require('./controllers/api');
 var fdaController = require('./controllers/fda');
+var myController = require('./controllers/my');
 var contactController = require('./controllers/contact');
 
 /**
@@ -119,6 +120,9 @@ app.use('/files/selectize', express.static(path.join(__dirname, 'node_modules/se
 app.use('/files/sugar',
   express.static(path.join(__dirname, 'node_modules/sugar/release'),
   { maxAge: 31557600000 }));
+app.use('/files/x-editable',
+  express.static(path.join(__dirname, 'node_modules/x-editable/dist/bootstrap3-editable'),
+  { maxAge: 31557600000 }));
 
 /**
  * Primary app routes.
@@ -186,7 +190,12 @@ app.post('/api/pairs', passportConfig.isAuthenticated, apiController.insertPairs
 app.get('/api/pairs', apiController.queryPairs, apiController.fmt_pair_list);
 
 app.get('/samedrop/results', passportConfig.isAuthenticated, homeController.getResults);
-app.get('/samedrop/results/:pair',  apiController.prep_anon_pair, apiController.queryPairs, homeController.renderResultPair, apiController.fmt_pair_list);
+app.get('/samedrop/results/:pair', apiController.prep_anon_pair, apiController.queryPairs, homeController.renderResultPair, apiController.fmt_pair_list);
+
+/**
+ * OAuth authentication routes. (Sign in)
+ */
+app.use('/my', passportConfig.isAuthenticated, myController.routes(app));
 
 /**
  * OAuth authentication routes. (Sign in)

@@ -1,4 +1,5 @@
 
+
 function do_ajax_form (ev) {
   var target = $(ev.target);
   ev.preventDefault( );
@@ -163,11 +164,14 @@ $(document).ready(function() {
   $("#fda-meters").selectize(fda_opts).trigger('change');
   var begin = Date.create('30 minutes ago');
   var end = Date.create('5 minutes from now');
-  var control = slippy($('.when-control'),
-    { controls: $('.when-input')
+  var when = $('.when-control');
+  if (when.is('.when-control')) {
+  var control = slippy(when,
+    { controls: when
     , begin: begin
     , end: end
   } );
+  }
 
   $('[data-ajax-target]').each(function iter () {
     var el = $(this);
@@ -176,6 +180,7 @@ $(document).ready(function() {
     }
     function reload ( ) {
       var url = el.data('ajax-target');
+
       $.ajax({
         url: url
       , context: el
@@ -283,5 +288,5 @@ $(document).ready(function() {
   $('#find-meter').on('shown.bs.modal', function ( ) {
     $(this).find('.meter-finder')[0].selectize.focus( );
   });
-
 });
+

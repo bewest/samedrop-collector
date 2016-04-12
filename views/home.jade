@@ -137,3 +137,6 @@ block content
         a.btn.btn-default(href='#', role='button') View details »
     .col-sm-6
       include partials/twitter-timeline.html
+    .col-sm-6
+      div.recent.results.pairs(data-ajax-target="/api/pairs?limit=5")
+

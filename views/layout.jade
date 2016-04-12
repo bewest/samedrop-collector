@@ -10,6 +10,7 @@ html
     link(rel='stylesheet', href='/css/main.css')
     link(rel='stylesheet', href='/files/gridforms/gridforms.css')
     link(rel='stylesheet', href='/files/selectize/css/selectize.bootstrap3.css')
+    block head-includes
   body
     include partials/header
 
@@ -29,6 +30,7 @@ html
     script(src='/js/lib/twitter.injection.js')
     script(src='/js/slippy.js')
     script(src='/js/main.js')
+    block tail
 
     // Google Analytics: change UA-XXXXX-X to be your site's ID
     script.
