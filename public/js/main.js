@@ -167,7 +167,7 @@ $(document).ready(function() {
   var when = $('.when-control');
   if (when.is('.when-control')) {
   var control = slippy(when,
-    { controls: when
+    { controls: $('.when-input')
     , begin: begin
     , end: end
   } );
