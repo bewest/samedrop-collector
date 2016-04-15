@@ -72,7 +72,14 @@ block content
             p
               | Find a meter
             //- form.grid-form
-            select.meter-finder#fda-meters(name="meter_spec")
+            //- select.meter-finder#fda-meters(name="meter_spec")
+            .finder
+              .TT--meters
+                .u-posRelative
+                  input.tt-hint(type="text", tabindex="-1", readonly="readonly")
+                  input.tt-input#meter-name-input(type="text", placeholder="brand ::: meter", name="meter_spec")
+                  img.TT.tt-spinner(src='/img/spinner.gif')
+                .TT-menu.tt-menu
             .form-group
               label Nickname?
                 input.form-control(type='text', name="nickname")
@@ -116,7 +123,7 @@ block content
       !{JSON.stringify(Object.keys(this))}
   .row
     .col-sm-6
-      h2 Background
+      h2 What is this project?
       p For background see #{' '}
         a(href="https://medium.com/@chrishannemann/measure-seventy-five-times-cut-once-further-blood-glucose-meter-testing-9e769a853710#.5bdjcvxy7") Chris Hannemann's Measure Seventy-Five Times, Cut Once: Further Blood Glucose Meter Testing.
 

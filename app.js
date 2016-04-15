@@ -123,6 +123,11 @@ app.use('/files/sugar',
 app.use('/files/x-editable',
   express.static(path.join(__dirname, 'node_modules/x-editable/dist/bootstrap3-editable'),
   { maxAge: 31557600000 }));
+app.use('/files/typeahead',
+  express.static(path.join(__dirname, 'node_modules/typeahead'),
+  { maxAge: 31557600000 }));
+
+
 
 /**
  * Primary app routes.

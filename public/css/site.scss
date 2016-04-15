@@ -29,3 +29,181 @@ svg {
   opacity: 0.1;
   // border: 50% 0% solid blue;
 }
+
+
+.tt-menu {
+
+}
+.tt-dataset {
+  background: white;
+}
+
+
+.finder {
+  input {
+    display: block;
+    width: 100%;
+    
+  }
+
+  .typeahead, .tt-query, .tt-hint, .tt-input, .u-posRelative {
+
+    width: 414px;
+    height: 30px;
+    // margin: 10px 0;
+    padding: 8px 12px;
+  }
+
+  .typeahead, .tt-query, .tt-input, .tt-hint {
+    font-size: 24px;
+    line-height: 30px;
+    border: 2px solid #ccc;
+    -webkit-border-radius: 8px;
+       -moz-border-radius: 8px;
+            border-radius: 8px;
+    outline: none;
+  }
+
+  .typeahead:focus, .tt-input:focus {
+    border: 2px solid #0097cf;
+  }
+
+  .tt-selectable {
+    cursor: pointer;
+  }
+
+  .tt-selectable + .tt-selectable {
+    border-top: 1px solid #ccd6dd;
+  }
+
+  .tt-cursor {
+    color: #fff;
+    background: #55acee;
+  }
+
+
+  .tt-hint {
+    color: #999
+  }
+
+  .tt-menu {
+    width: 422px;
+    // margin: 12px 0;
+    padding: 8px 0;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    -webkit-border-radius: 8px;
+       -moz-border-radius: 8px;
+            border-radius: 8px;
+    -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+       -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+            box-shadow: 0 5px 10px rgba(0,0,0,.2);
+  }
+
+  .tt-suggestion {
+    padding: 3px 20px;
+    font-size: 18px;
+    line-height: 24px;
+  }
+
+  .tt-suggestion:hover {
+    cursor: pointer;
+    color: #fff;
+    background-color: #0097cf;
+  }
+
+  .tt-suggestion.tt-cursor {
+    color: #fff;
+    background-color: #0097cf;
+
+  }
+
+  .TT--meters {
+    // position: absolute;
+  *z-index: 1;
+  width: 500px;
+  margin: 50px auto 0 auto;
+  padding: 15px;
+  text-align: left;
+  background-color: #0097cf;
+  background-image: -moz-linear-gradient(top, #04a2dd, #03739c);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#04a2dd), to(#03739c));
+  background-image: -webkit-linear-gradient(top, #04a2dd, #03739c);
+  background-image: -o-linear-gradient(top, #04a2dd, #03739c);
+  background-image: linear-gradient(top, #04a2dd, #03739c);
+  background-repeat: repeat-x;
+  border: 1px solid #024e6a;
+  -webkit-border-radius: 10px;
+     -moz-border-radius: 10px;
+          border-radius: 10px;
+  -webkit-box-shadow: 0 0 2px #111;
+     -moz-box-shadow: 0 0 2px #111;
+          box-shadow: 0 0 2px #111;
+  }
+
+  .tt-suggestion p {
+    margin: 0;
+  }
+
+  .TT--meters {
+    .TT-menu {
+      position: absolute;
+    }
+    .tt-menu {
+      display: none;
+
+      z-index: 100;
+
+      -webkit-border-radius: 8px;
+         -moz-border-radius: 8px;
+              border-radius: 8px;
+              box-shadow: 0px 0px 0px 1px green;
+      -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+         -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+              box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    }
+
+    .tt-open.tt-menu {
+      display: block;
+    }
+    .tt-spinner {
+      position: absolute;
+      width: 28px;
+      height: 28px;
+      top: 2px;
+      right: 8px;
+      display: none;
+    }
+  }
+  .u-posRelative {
+    position: relative;
+    padding: 0;
+  }
+  .u-posRelative {
+    .tt-hint, .tt-input, .tt-spinner {
+      position: absolute;
+    }
+  }
+
+
+}
+
+.inventory .group {
+
+  margin-bottom: 1ex;
+  padding: 2ex;
+      -webkit-border-radius: 8px;
+         -moz-border-radius: 8px;
+              border-radius: 8px;
+              box-shadow: 0px 0px 0px 1px green;
+      -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+         -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+              box-shadow: 0 5px 10px rgba(0,0,0,.2);
+
+}
+
+#find-meter .finder .TT--meters  {
+  margin-top: 0;
+
+}

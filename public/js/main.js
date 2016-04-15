@@ -161,7 +161,7 @@ $(document).ready(function() {
   };
   $(".per-meter").on('focus', '.meter-chooser', do_favorite_choice);
   $("#pairsinsertion").on('focus', '.empty.per-meter :input', needs_new_meter);
-  $("#fda-meters").selectize(fda_opts).trigger('change');
+  // $("#fda-meters").selectize(fda_opts).trigger('change');
   var begin = Date.create('30 minutes ago');
   var end = Date.create('5 minutes from now');
   var when = $('.when-control');
@@ -286,7 +286,8 @@ $(document).ready(function() {
   $('FORM.ajax-form').on('submit', do_ajax_form);
   $('#find-meter').on('form-submit-done', 'FORM', finished_saving_favorite);
   $('#find-meter').on('shown.bs.modal', function ( ) {
-    $(this).find('.meter-finder')[0].selectize.focus( );
+    // $(this).find('.meter-finder')[0].selectize.focus( );
+    $(this).find('.TT--meters .tt-input').focus( );
   });
 
   $('.when-input').on('update-time', function (ev) {
@@ -294,5 +295,44 @@ $(document).ready(function() {
     $('.when-explained').val(Date.create(target.val( )).full( ));
   });
   $('.when-input').trigger('update-time');
+
+  var findMeters = new Bloodhound({
+    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('complete'),
+    // datumTokenizer: customTokens,
+    queryTokenizer: Bloodhound.tokenizers.whitespace,
+    identify: function (obj) {
+      console.log(obj);
+      if (obj.spec) {
+        return obj.spec;
+      } else {
+        obj.spec = obj.term;
+        return obj.term;
+      }
+    },
+    prefetch: {
+      url: '/fda/suggest/meters'
+    // , transform: polish
+    },
+    remote: {
+      url: '/fda/suggest/meters/%brand'
+    , wildcard: '%brand'
+    // , transform: polish
+    }
+  });
+
+  $('#meter-name-input').typeahead({
+    hint: $('.tt-hint')
+  , menu: $('.tt-menu')
+  , highlight: true
+  , minLength: 0
+  }, {
+    name: 'meters'
+  , source: findMeters
+  , display: 'complete'
+  }).on('typeahead:asyncrequest', function ( ) {
+    $('.tt-spinner').show( );
+  }).on('typeahead:asynccancel typeahead:asyncreceive', function ( ) {
+    $('.tt-spinner').hide( );
+  });
 });
 

@@ -1,6 +1,7 @@
 
 var express = require('express');
 var request = require('request');
+var _ = require('lodash');
 var querystring = require('querystring');
 
 var FDA = {
@@ -107,6 +108,7 @@ function count_vendors_spec (req, res, next) {
     count: 'registration.name.exact'
   };
   req.fda.count = params.count;
+  req.fda.limit = 100;
   next( );
 }
 
@@ -148,12 +150,16 @@ function fmt_vendor_links (req, res, next) {
   if (res.fda.results)
   res.fda.results.forEach(function iter(item) {
     // item.url = req.url + '/' + encodeURIComponent(item.term);
-    item.url = req.path + '/' + item.term.replace(/ /g, '+').replace(/[,.]/g, '');
+    var words = item.term.replace(/[.,:]/g, '').split(' ');
+    item.suggest = words.slice(0, 2).join(' ');
+    item.complete = item.suggest + ' ::: ';
+    item.url = req.path + '/' + encodeURIComponent(item.suggest);
     vendors.push(item);
   });
   res.json(vendors);
   next( );
 }
+
 function fmt_fda_resp (req, res, next) {
   res.json(res.fda);
   next( );
@@ -184,6 +190,60 @@ exports.routes = function routes (master) {
   app.param('attr', function (req, res, next, attr) {
     next( );
   });
+
+  function prep_suggest_query (req, res, next) {
+    if (req.params.term) {
+      var tokens = req.params.term.split(':::');
+      var vendor = (tokens.slice(0, 1).pop( ) || "").trim( );
+      var model = (tokens.slice(1).join('') || "").trim( );
+      if (vendor) {
+        req.fda_vendor = vendor;
+      }
+      if (model) {
+        req.fda_meter_name = model;
+      }
+    }
+    next( );
+  }
+
+  function fmt_suggestions (req, res, next) {
+    var term = req.params.term;
+    var results = [ ];
+    if (res.fda) {
+      var list = res.fda.results || [ ];
+      _.map(list, function (vendor, i) {
+        var vendor_name = vendor.registration.name;
+        var vendor_words = vendor_name.replace(/[.,:]/g, '').split(' ');
+        var vendor_suggest = vendor_words.slice(0, 2).join(' ');
+        var complete_prefix = vendor_suggest + ' ::: ';
+        var record = {
+          // name: name
+          vendor: vendor_name
+        , registration: vendor.registration
+        , pma_number: vendor.pma_vendor
+        , k_number: vendor.k_number
+        };
+        _.forEach(vendor.proprietary_name, function (name, i) {
+          var words = name.replace(/[.,:]/g, '').split(' ');
+          var suggest = words.join(' ');
+          var stub = {
+            product: name
+          , complete: req.fda_vendor + ' ::: ' + suggest
+          , suggest: req.fda_vendor + ' ::: ' + suggest
+          // , suggest: term + ' ' + name
+
+          };
+          var item = _.merge({ }, stub, record);
+          results.push(item);
+        });
+      });
+      res.json(results);
+      // res.json(res.fda);
+    }
+  }
+
+  app.get('/suggest/meters', fda_init_spec, count_vendors_spec, prep_suggest_query, query_fda, fmt_vendor_links);
+  app.get('/suggest/meters/:term', fda_init_spec, prep_suggest_query, query_fda, fmt_suggestions);
 
   app.get('/smbg/vendors/:attr', fda_init_spec, empty_list);
   return app;

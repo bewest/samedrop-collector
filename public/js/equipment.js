@@ -83,4 +83,57 @@ $(document).ready(function() {
   $('.inventory .x-editable').on('save',  save_field);
   $('.inventory').on('click', '.delete-eq',  delete_eq);
 
+  // url = '/fda/meter-vendors';
+  // var url = '/fda/smbg';
+  function customTokens (data) {
+    var tokers = [ ];
+    console.log("TOKE", data);
+    if (data.spec)
+    tokers = tokers.concat(Bloodhound.tokenizers.whitespace(data.spec));
+    if (data.products) {
+      for (var x=0; x< data.products.length; x++) {
+      tokers = tokers.concat(Bloodhound.tokenizers.whitespace(data.products[x]));
+      }
+    }
+    return tokers;
+  };
+  function polish (resp) {
+        var results = resp.results;
+        console.log("REC", resp);
+        if (resp.meta && resp.results)
+        return resp.results;
+        if (!resp.error && resp.length) {
+          $.each(resp, function (i, item) {
+            item.spec = item.term + ' ::: ';
+            return item;
+          });
+          return resp;
+        }
+        return [ ];
+
+  }
+  function customSource (q, sync, async) {
+    console.log('QQQ', q, sync, async);
+    return findMeters.search(q, async);
+  }
+
+/*
+  $('#eq-editor .typeahead').typeahead({
+    hint: true
+  , highlight: true
+  , minLength: 0
+  }, {
+    name: 'meters'
+  , source: findMeters
+  , display: 'complete'
+  });
+
+*/
+  function finished_saving (ev, results, status) {
+    if (status == 'success') {
+      $('.inventory').trigger('reload');
+    }
+  }
+  $('#eq-editor').on('form-submit-done', 'FORM', finished_saving);
+
 });

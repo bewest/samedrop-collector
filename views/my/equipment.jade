@@ -3,6 +3,7 @@ extends ../layout
 block head-includes
   link(rel='stylesheet', href='/files/x-editable/css/bootstrap-editable.css')
 block tail
+  script(src='/js/lib/typeahead.bundle.min.js')
   script(src='/files/x-editable/js/bootstrap-editable.js')
   script(src='/js/equipment.js')
 block content
@@ -12,15 +13,38 @@ block content
     Manage equipment used to perform tests.
 
 
-  #editable.hidden
-    .buttonstemplate
-      button.btn.btn-primary.btn-sm.editable-submit(type="submit")
-        i.fa.fa-check
+  .row
+    #editable.hidden
+      .buttonstemplate
+        button.btn.btn-primary.btn-sm.editable-submit(type="submit")
+          i.fa.fa-check
 
-      button.btn.btn-default.btn-sm.editable-cancel(type="button")
-        i.fa.fa-ban
+        button.btn.btn-default.btn-sm.editable-cancel(type="button")
+          i.fa.fa-ban
 
 
+  div#eq-editor
+    form.ajax-form(action="/account/favorites", method="POST")
+      input(type='hidden', name='_csrf', value=_csrf)
+      .finder
+        .TT--meters
+          .u-posRelative
+            input.tt-hint(type="text", tabindex="-1", readonly="readonly")
+            input.tt-input#meter-name-input(type="text", placeholder="brand ::: meter", name="meter_spec")
+            img.TT.tt-spinner(src='/img/spinner.gif')
+          .TT-menu.tt-menu
+          .form-group
+            label Nickname?
+              input.form-control(type='text', name="nickname")
+          .form-group
+            label Serial?
+              input.form-control(type='text', name='serial')
+          button.btn.btn-primary(type="submit")
+            i.fa.fa-plus
+            | Add set
+          button.btn.btn-default(type="button")
+            i.fa.fa-reset
+            | Reset
   div.inventory(data-ajax-target="/my/equipment/list", data-csrf="#{_csrf}")
     div.wrapped.hidden
       div.group-template
