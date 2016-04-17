@@ -14,6 +14,10 @@ block content
         fieldset
           legend Comparison: #{' '}
             a.link.canonical(rel="canonical", href="/samedrop/results/#{result._id}") #{result._id}
+        div.whenspec(data-row-span="4")
+          div(data-field-span="4")
+            label When
+              input.v.when(type='datetime', readonly="readonly", placeholder="Add a new meter ...", value="#{result.tested_at}")
         for pair in result.comparisons
           div.per-meter(data-row-span="4")
             div(data-field-span="2")
